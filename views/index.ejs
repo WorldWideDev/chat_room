@@ -1,0 +1,72 @@
+<html>
+<head>
+	<title></title>
+	<link rel="stylesheet" type="text/css" href="style.css">
+	 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script type ="text/javascript" src="/socket.io/socket.io.js"></script>
+    <script type ="text/javascript">
+        $(document).ready(function (){
+            // this triggers the connection event in our server!
+            var socket = io.connect();
+            console.log('here')
+        	var alias = prompt('choose an alias')
+            function dynamicScroll (){
+                var out = document.getElementById("chatBox");
+                // allow 1px inaccuracy by adding 1
+                var isScrolledToBottom = out.scrollHeight - out.clientHeight;
+                if(isScrolledToBottom)
+                    out.scrollTop = out.scrollHeight - out.clientHeight;
+            }
+            if (alias){
+                $('#chatBox').css('visibility', 'visible');
+                $('form').css('visibility', 'visible');
+            }
+            socket.emit('new_user', {user: alias})
+            // socket.on('new_user', function (data){
+            //     console.log('in new user')
+            //     console.log(data)
+
+            // })
+            socket.on('user_left', function (data){
+                console.log('client disconnect')
+                console.log(data)
+                $('#chatBox').append('<p class="left">'+data.user+' has left</p>')
+                dynamicScroll();
+            })
+            socket.on('user_added', function (data){
+                console.log('in user added')
+                console.log(data)
+                for(i in data.loggy){
+                    console.log(data.loggy[i].comment)
+                    $('#chatBox').append('<p class="userTxt">' + data.loggy[i].user + ' says: </p> <p class="comTxt">' + data.loggy[i].comment + '</p><br>')
+                }
+                dynamicScroll()
+            })
+            socket.on('user_entered', function (data) {
+                $('#chatBox').append('<p class="new">'+data.user+' has entered</p>')
+                dynamicScroll();
+            })
+            socket.on('comment_added', function (data){
+                $('#chatBox').append('<p class="userTxt">' + data.comments.user + ' says: </p> <p class="comTxt">' + data.comments.comment + '</p><br>')
+                document.getElementById('inputTxt').value=null;
+                dynamicScroll()
+            })
+            $('form').submit(function() {
+            	comment = this.chatTxt.value
+            	socket.emit('new_comment', {context: comment, user: alias})
+            	return false
+            });
+        })
+    </script>
+</head>
+<body>
+	<div id='container'>
+		<h1>CYBER WORLD</h1>
+		<div id='chatBox'></div>
+		<form method='POST'>
+			<input id='inputTxt' type='text' name='chatTxt'>
+			<input id='chatBtn' type='submit' value='ENTER'>
+		</form>
+	</div>
+</body>
+</html>
