@@ -8,31 +8,29 @@
         $(document).ready(function (){
             // this triggers the connection event in our server!
             var socket = io.connect();
-            console.log('here')
         	var alias = prompt('choose an alias')
+
             function dynamicScroll (){
                 var out = document.getElementById("chatBox");
-                // allow 1px inaccuracy by adding 1
                 var isScrolledToBottom = out.scrollHeight - out.clientHeight;
                 if(isScrolledToBottom)
                     out.scrollTop = out.scrollHeight - out.clientHeight;
             }
+
             if (alias){
                 $('#chatBox').css('visibility', 'visible');
                 $('form').css('visibility', 'visible');
             }
-            socket.emit('new_user', {user: alias})
-            // socket.on('new_user', function (data){
-            //     console.log('in new user')
-            //     console.log(data)
 
-            // })
+            socket.emit('new_user', {user: alias})
+
             socket.on('user_left', function (data){
                 console.log('client disconnect')
                 console.log(data)
                 $('#chatBox').append('<p class="left">'+data.user+' has left</p>')
                 dynamicScroll();
             })
+
             socket.on('user_added', function (data){
                 console.log('in user added')
                 console.log(data)
@@ -42,20 +40,25 @@
                 }
                 dynamicScroll()
             })
+
             socket.on('user_entered', function (data) {
                 $('#chatBox').append('<p class="new">'+data.user+' has entered</p>')
                 dynamicScroll();
             })
+
             socket.on('comment_added', function (data){
                 $('#chatBox').append('<p class="userTxt">' + data.comments.user + ' says: </p> <p class="comTxt">' + data.comments.comment + '</p><br>')
                 document.getElementById('inputTxt').value=null;
                 dynamicScroll()
             })
-            $('form').submit(function() {
-            	comment = this.chatTxt.value
-            	socket.emit('new_comment', {context: comment, user: alias})
-            	return false
-            });
+                console.log($('#inputTxt').val())
+                $('form').submit(function() {
+                    if($('#inputTxt').val() != null){
+                    	comment = this.chatTxt.value
+                        socket.emit('new_comment', {context: comment, user: alias})
+                        }   
+                    return false
+                });
         })
     </script>
 </head>

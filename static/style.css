@@ -8,6 +8,9 @@ body{
 input{
 	color: black;
 }
+p{
+	margin: 4px;
+}
 #container{
 	width: 970px;
 	min-height: 600px;
@@ -16,6 +19,7 @@ input{
 }
 	#container h1{
 		font-size: 2em;
+		margin: 50px;
 	}
 #chatBox{
 	width: 500px;
