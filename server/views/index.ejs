@@ -24,14 +24,14 @@
 
             socket.emit('new_user', {user: alias})
 
-            socket.on('user_left', function (data){
+            socket.on('user_left', (data) => {
                 console.log('client disconnect')
                 console.log(data)
                 $('#chatBox').append('<p class="left">'+data.user+' has left</p>')
                 dynamicScroll();
             })
 
-            socket.on('user_added', function (data){
+            socket.on('user_added', (data) => {
                 console.log('in user added')
                 console.log(data)
                 for(i in data.loggy){
@@ -41,12 +41,12 @@
                 dynamicScroll()
             })
 
-            socket.on('user_entered', function (data) {
+            socket.on('user_entered', (data) =>  {
                 $('#chatBox').append('<p class="new">'+data.user+' has entered</p>')
                 dynamicScroll();
             })
 
-            socket.on('comment_added', function (data){
+            socket.on('comment_added', (data) => {
                 $('#chatBox').append('<p class="userTxt">' + data.comments.user + ' says: </p> <p class="comTxt">' + data.comments.comment + '</p><br>')
                 document.getElementById('inputTxt').value=null;
                 dynamicScroll()
@@ -63,13 +63,5 @@
     </script>
 </head>
 <body>
-	<div id='container'>
-		<h1>CYBER WORLD</h1>
-		<div id='chatBox'></div>
-		<form method='POST'>
-			<input id='inputTxt' type='text' name='chatTxt'>
-			<input id='chatBtn' type='submit' value='ENTER'>
-		</form>
-	</div>
 </body>
 </html>

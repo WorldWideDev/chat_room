@@ -1,0 +1,31 @@
+{
+  "name": "chat-server",
+  "version": "2.0.0",
+  "description": "Update to chat_room server",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"is this thing on?\"",
+    "start": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WorldWideDev/chat_room.git"
+  },
+  "keywords": [
+    "chat",
+    "socket.io",
+    "express",
+    "cyber"
+  ],
+  "author": "devon",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/WorldWideDev/chat_room/issues"
+  },
+  "homepage": "https://github.com/WorldWideDev/chat_room#readme",
+  "dependencies": {
+    "ejs": "^3.1.6",
+    "express": "^4.17.1",
+    "socket.io": "^4.0.1"
+  }
+}
