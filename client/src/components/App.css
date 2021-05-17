@@ -26,7 +26,6 @@ p{
 	height: 300px;
 	overflow-y: scroll;
 	display: inline-block;
-	visibility: hidden;
 	background-color: transparent;
 }
 .userTxt{

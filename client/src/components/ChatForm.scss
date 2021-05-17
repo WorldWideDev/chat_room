@@ -1,0 +1,14 @@
+@import '../styles/variables';
+input {
+    padding: .2em .5em;
+    background-color: $bg-col-secondary;
+}
+.input-txt {
+    color: $col-primary;
+    width: 25%;
+}
+.chat-btn {
+    color: $col-secondary;
+}
+
+

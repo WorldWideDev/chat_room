@@ -21,30 +21,22 @@ var io = socketio(server, {
       credentials: true,
   }
 });
-
-let arrCom = [];
-var users = {};
 io.sockets.on('connection', (socket) => {
 	socket.on('new_user', (data) => {
-		// console.log(data.users)
-		// dicUsers.name = data.users
-		// dicUsers.id = userId
-		// userId++
-        console.log(data);
-		// users.push(dicUsers)
-		users[socket.id] = data.user;
-		console.log(users)
-		console.log(data.user + ' is new user')
-		//socket.emit('user_added', {newUser: data.user})
-		io.emit('user_entered', {user: users[socket.id]})
+		io.emit('user_entered', {
+            user: data.user,
+            timestamp: new Date()
+        })
 	})
 	socket.on('new_comment', (data) => {
         console.log(data, "is new comment");
-		io.emit('comment_added', data);
+        io.emit('comment_added', {...data, timestamp: new Date()});
 	})
 	socket.on('disconnect', (data) => {
-		console.log(users[socket.id])
-		io.emit('user_left', {user: users[socket.id]})
+        io.emit('user_left', {
+            user: "test", 
+            timestamp: new Date()
+        })
 	})
 
 });
