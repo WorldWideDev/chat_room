@@ -13,7 +13,9 @@ function App() {
             setAlias(als);
             socket.emit("new_user", {user:als});
         });
-        return () => socket.disconnect();
+        return () => {
+            return socket.disconnect();
+        }
     }, [socket]);
     return (
         alias === "" ? null :

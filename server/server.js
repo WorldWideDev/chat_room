@@ -33,6 +33,7 @@ io.sockets.on('connection', (socket) => {
         io.emit('comment_added', {...data, timestamp: new Date()});
 	})
 	socket.on('disconnect', (data) => {
+        console.log(data, "disconnect data");
         io.emit('user_left', {
             user: "test", 
             timestamp: new Date()

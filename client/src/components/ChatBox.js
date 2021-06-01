@@ -1,35 +1,38 @@
 import './ChatBox.scss';
 import io from 'socket.io-client';
 import React, { useState, useEffect } from 'react';
+import ChatEntry from './ChatEntry';
 function ChatBox(props) {
     const [messages, setMessages] = useState([]);
     const [ socket ] = useState( () => io(":3030") );
     useEffect(() => {
-        console.log("use effect running (ChatBox)")
         socket.on("comment_added", (data) => {
-            console.log(data);
-            console.log(messages);
-            setMessages([...messages, {
-                clsName: "comTxt",
-                timestamp: data.timestamp,
-                user: data.user,
-                content: `says: ${data.content}`
-            }]);
+            setMessages((prevMessages) => {
+                console.log(prevMessages);
+                return [...prevMessages, {
+                    clsName: "comTxt",
+                    timestamp: data.timestamp,
+                    user: data.user,
+                    content: `says: ${data.content}`
+                }];
+            });
         });
         socket.on("user_entered", (data) => {
-            setMessages([...messages, {
-                clsName: "new",
-                timestamp: data.timestamp,
-                user: data.user,
-                content: `has entered`
-            }]);
+            setMessages((prevMessages) => {
+                return [...prevMessages, {
+                    clsName: "new",
+                    timestamp: data.timestamp,
+                    user: data.user,
+                    content: `has entered`
+                }];
+            });
         });
-    //    return () => socket.disconnect();
-    }, [messages]);
+        return () => socket.disconnect();
+    }, []);
     return (
 	    <div className='chat-box'>
             { messages.map((message, i) => (
-                <p key={message.timestamp}>{message.user} <span className={message.clsName}> { message.content }</span></p>
+                <ChatEntry key={message.timestamp} message={message} />
             )).reverse() }
         </div>
     ) ;

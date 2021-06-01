@@ -1,0 +1,11 @@
+@import '../styles/variables';
+.chat-entry {
+    display: flex;
+    justify-content: space-between;
+}
+.chat-entry-identifier {
+    font-weight: bold;
+}
+.new .chat-entry-content {
+    color: $col-tertiary;
+}
